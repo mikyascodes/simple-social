@@ -1,0 +1,28 @@
+{% extends "registration/base.html" %}
+{% block title %}
+    profile
+{% endblock %}
+{% block content %}
+<div class="friends-now">
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+<div class="users-friends-now">
+        <div class="profile-image-container-unclickable">
+            <img src="{{users.avatar.url}}" class="profile-image" alt="Profile image">
+            <div class="profile-info">
+              <p class="profile-username">{{users.user.username}}</p>
+              <p class="profile-email">{{users.user.email}}</p>
+            </div>
+            <a href="{% url 'view_profile' users.id %}">
+                <button type="button"  class="profile-button">View</button>
+            </a>
+            <button class="close-friends-now" type="button"><span>&times;</span></button>
+</div>
+</div>
+
+{% endblock %}

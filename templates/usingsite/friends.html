@@ -1,0 +1,27 @@
+{% extends "registration/base.html" %}
+{% block title %}
+    profile
+{% endblock %}
+{% block content %}
+   
+<div class="friends">
+    <h2> Your Friends With</h2>
+    <ul class="list-of-users">	
+    {% for following in following %}
+    <li>	
+        <div class="profile-image-container-large-view" data-location=" {% url 'view_profile' user.id %}">
+            <img src="{{following.avatar.url}}" class="profile-image-large" alt="Profile image">
+            <div class="profile-info-large">
+              <p class="profile-username-large">{{following.user.username}}</p>
+              <p class="profile-email-large">{{following.user.email}}</p>
+            </div>
+            <a href="{% url 'view_profile' following.id %}">
+              <button type="button"  class="profile-button">View</button>
+            </a>
+        </div>
+    </li>
+    {% endfor %}
+    </ul>
+    </div>
+</div>
+{% endblock %}

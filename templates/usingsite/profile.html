@@ -1,0 +1,93 @@
+{% extends "registration/base.html" %}
+{% block title %}
+profile
+{% endblock %}
+{% block content %}
+
+<!-- bootstrap TEMPLATE -->
+
+<input id="slider" class="customSlider" type="checkbox">
+<label for="slider"></label>
+
+<div class="wrapper">
+	<div class="top-icons">
+		<i class="fas fa-long-arrow-alt-left"></i>
+		<i class="fas fa-ellipsis-v"></i>
+		<i class="far fa-heart"></i>
+	</div>
+
+	<div class="profile">
+		<img src="{{ user.userprofile.avatar.url }}" class="thumbnail">
+		<div class="check"><i class="fas fa-check"></i></div>
+		<h3 class="name">{{ user.username }}</h3>
+		<p class="title">{{ user.email }}</p>
+		<p class="description">{{ user.userprofile.bio }}</p>
+		<button type="button" class="btn">Hire Me</button>
+	</div>
+
+	<div class="social-icons">
+		<div class="icon">
+			<a href="/"><i class="fab fa-dribbble"></i></a>
+			<h4>12.8k</h4>
+			<p>Followers</p>
+		</div>
+
+		<div class="icon">
+			<a href="#"><i class="fab fa-behance"></i></a>
+			<h4>12.8k</h4>
+			<p>Followers</p>
+		</div>
+
+		<div class="icon">
+			<a href="#"><i class="fab fa-twitter"></i></a>
+			<h4>12.8k</h4>
+			<p>Followers</p>
+		</div>
+	</div>
+</div>
+
+<div class="concept">concept by
+	<a href="https://dribbble.com/shots/4346772-Profile-Card" target="_blank">
+		<i class="fab fa-dribbble"></i> Vijay Verma
+	</a>
+</div>
+<div class="profile-message">
+
+	{% if messages %}
+	{% for message in messages %}
+	<div class="alert alert-{{ message.tags }} alert-dismissible">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		{{ message }}
+	</div>
+	{% endfor %}
+	{% endif %}
+</div>
+
+<div class="users-section">
+	<ul class="list-of-users">
+		{% for users in users %}
+		<li>
+			<div class="profile-image-container" data-location=" {% url 'view_profile' users.id %}">
+				<img src="{{users.avatar.url}}" class="profile-image" alt="Profile image">
+				<div class="profile-info">
+					<p class="profile-username">{{users.user.username}}</p>
+					<p class="profile-email">{{users.user.email}}</p>
+				</div>
+				<form action="{% url 'friends_now' users.id %}" method="POST">
+					{% csrf_token %}
+					{% if user.is_authenticated and users in user.userprofile.following.all %}
+					<button class="profile-button" name="follow" value="unfollow" type="submit">Unfollow</a>
+						{% else %}
+						<button class="profile-button" name="follow" value="follow" type="submit">Follow</a>
+							{% endif %}
+				</form>
+			</div>
+		</li>
+
+		{% endfor %}
+	</ul>
+</div>
+
+{% endblock %}
