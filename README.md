@@ -5,7 +5,7 @@ This project is about the basics of a social network application. The users can 
 3. Django channels for messaging
 
 - To run the project follow this commands
-1.create virtual env
+1. create virtual env
 - pip install virtual env
 - virtualenv env
 - env\Scripts\avtivate.bat
