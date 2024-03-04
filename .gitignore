@@ -159,10 +159,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-media/profile_image/*.jpg
-media/profile_image/*.png
-media/profile_image/*.gif
-
+media/profile_image/*
 migration/*
 !migration/__init__.py
 
