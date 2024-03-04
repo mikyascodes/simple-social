@@ -107,8 +107,8 @@
 .navbar-inverse .navbar-nav > .dropdown > a:hover .caret {
   border-bottom-color: #ffffff;
 }
+/* CSS FOR THE NAVABR ENDS HERE */
 
-/* css FOR THE NAVABR ENDS HERE */
 .form-style {
   margin: auto;
   width: fit-content;
@@ -123,6 +123,9 @@
   display: flex;
   justify-content: center;
   margin-top: 1.2em;
+}
+.passreset a {
+  color: hotpink;
 }
 
 .user-loogedin-info {
@@ -143,8 +146,8 @@
   color: white;
 }
 
-/* the css for the PROFILEPAGE */
-/* how to change  the size of this card */
+/* CSS PROFILEPAGE */
+
 * {
   margin: 0;
   padding: 0;
@@ -156,7 +159,7 @@ body {
   height: 100vh;
   display: flex;
   position: relative;
-  background: #eeeeec;
+  background: linear-gradient(60deg, rgb(34, 66, 52), rgb(111, 219, 111));
   align-items: flex-start;
   flex-direction: column;
   justify-content: center;
@@ -411,8 +414,8 @@ body {
   color: #ac1966;
   text-decoration: none;
 }
+/* PROFILE CSS ENDS */
 
-/* PROFILE CSS ends here */
 .users-section {
   border-radius: 4px;
   border: #000 2px solid;
@@ -496,42 +499,77 @@ body {
   left: 40%;
 }
 
+.profile-incomplete-message {
+  position: relative;
+  margin-top: 6%;
+  margin-bottom: 1%;
+  width: 100%;
+}
+
+.account-created-message {
+  position: absolute;
+  top: 8%;
+  left: 0%;
+  width: 100%;
+}
+
+.alert-alert-info {
+  color: blue;
+  background-color: lightblue;
+}
+
+.alert-alert-success {
+  color: black;
+  background-color: darkcyan;
+}
+
 /* CSS FOR CHAT AREA */
 #form {
   position: absolute;
-  top: 30%;
+  top: 80%;
   left: 50%;
+  width: 30%;
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
 
 #messages {
   position: absolute;
-  top: 40%;
+  top: 30%;
   left: 50%;
-  width: 400px;
-  height: 300px;
+  width: 35%;
+  height: 50%;
   border: 3px solid #ccc;
   padding: 10px;
   overflow-y: scroll;
-  /* Enable scrolling for chat messages */
+  background-color: white;
 }
 
 #send-button {
-  width: 10%;
-  padding: 5px;
+  position: absolute;
+  top: 91%;
+  left: 0%;
+  width: 15%;
+  padding: 1%;
+  margin-top: 2%;
+  margin-bottom: 2%;
   background-color: #007bff;
-  /* Blue color */
   color: white;
-  border: none;
-  cursor: pointer;
 }
 
-/* FRIENDS NOW css */
+#time-stamp {
+  background-color: lightblue;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+/* FRIENDS NOW CSS */
 .friends-now {
   width: 50vw;
   height: fit-content;
   position: relative;
-  border: pink 10px solid;
-  border-radius: 2px;
+  border: rgb(252, 74, 74) 5px solid;
+  border-radius: 5px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -559,7 +597,7 @@ body {
   height: fit-content;
   border: #000 10px solid;
   top: 100px;
-  left: 30%;
+  left: 35%;
 }
 
 .profile-image-container-large-view {
@@ -590,4 +628,56 @@ body {
   font-weight: bold;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   font-size: x-large;
+}
+
+#notifications-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 60vw;
+  height: 100vh;
+  padding: 2%;
+  margin-top: 10%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.notification {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  border: darkgrey 1px solid;
+  padding: 0.5%;
+  height: fit-content;
+  width: 55vw;
+  cursor: pointer;
+}
+
+.notification p {
+  font-size: medium;
+  font-weight: 600;
+}
+
+.notification img {
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+}
+
+.notification-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  width: 45vw;
+  height: fit-content;
+  padding: 1%;
+  overflow-x: auto;
+}
+
+.close-button {
+  align-self: flex-start;
+  margin-left: auto;
 }

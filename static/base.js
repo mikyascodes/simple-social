@@ -1,50 +1,104 @@
-const profileImageContainers = document.querySelectorAll('.profile-image-container');
-// Add a click event listener to each profile image container
-profileImageContainers.forEach(profileImageContainer => {
-  profileImageContainer.addEventListener('click', function() {
-    // Get the URL from the data-location attribute
+//----THE VIEWPROFILE JS----
+const profileImageContainers = document.querySelectorAll(
+  ".profile-image-container"
+);
+profileImageContainers.forEach((profileImageContainer) => {
+  profileImageContainer.addEventListener("click", function () {
     const url = this.dataset.location;
-
-    // Redirect the user to the URL
     window.location.href = url;
   });
 });
 
-//END OF THE VIEWPROFILE DIV 
 
-                            const closeButton = document.querySelector('.close-friends-now');
-                            // Add an event listener to the close button element for the `click` event
-                            closeButton.addEventListener('click', () => {
-                            // Redirect to the previous page
-                            window.history.back();
-                            });
-//END OF CLOSE BUTTON on friend_now page
+//-----CLOSE BUTTON JS-----
+const closeButtons = document.querySelectorAll(".close-friends-now");
+closeButtons.forEach(closeButton => {
+  closeButton.addEventListener("click", () => {
+    window.location.href = "/profile";
+  });
+});
+
+// ------MESSAGEBOX------
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('message-input').focus();
+  document.getElementById('form').addEventListener('submit', function (event) {
+    document.getElementById('message-input').focus();
+  });
+});
 
 
-//WEBSOCKET CLIENT
-let url = `ws://${window.location.host}/ws/socket-server/`
+//------NOTIFICATION------
+function checkNotifications() {
+  $.ajax({
+    url: '/check_notification/',
+    type: 'GET',
+    success: function (response) {
+      if (response.notifications.length === 0) {
+        $('#notifications-container').hide();
+      } else {
+        $('#notifications-container').show();
+        $('#notifications-container').empty();
+        response.notifications.forEach(function (notification) {
+          var notificationElement = '<div class="notification">' +
+            '<img src="' + notification.sender_avatar_url + '" alt="Avatar">' +
+            '<div class="notification-info">' +
+            '<p>' + notification.sender + '</p>' +
+            '<em>' + notification.message + '</em>' +
+            '<span>' + notification.created_at + '</span>' +
+            '</div>' +
+            '<button class="close-button" data-notification-id="' + notification.id + '"><span>&times;</span></button>' +
+            '</div>';
+          $('#notifications-container').append(notificationElement);
+        });
+      }
 
-const chatSocket = new WebSocket(url)
-
-chatSocket.onmessage = function(e){
-    let data = JSON.parse(e.data)
-    console.log('Data:', data)
-
-    if(data.type === 'chat'){
-        let messages = document.getElementById('messages')
-
-        messages.insertAdjacentHTML('beforeend', `<div>
-                                <p>${data.message}</p>
-                            </div>`)
+      $('.close-button').click(function () {
+        var notificationId = $(this).data('notification-id');
+        $.ajax({
+          url: '/update_notification_status/',
+          type: 'POST',
+          data: {
+            notification_id: notificationId
+          },
+          beforeSend: function (xhr, settings) {
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+          },
+          success: function (response) {
+            if (response.success) {
+              alert('Notification removed successfully');
+              location.reload();
+            } else {
+              alert('Error deleting notification :', response.error);
+            }
+          },
+          error: function (xhr, status, error) {
+            console.error('AJAX error:', error);
+          }
+        });
+      });
+    },
+    error: function (xhr, status, error) {
+      console.error('Error fetching notifications:', error);
     }
+  });
 }
 
-let form = document.getElementById('form')
-form.addEventListener('submit', (e)=> {
-    e.preventDefault()
-    let message = e.target.message.value 
-    chatSocket.send(JSON.stringify({
-        'message':message
-    }))
-    form.reset()
-})
+checkNotifications();
+setInterval(checkNotifications, 20000);
+
+
+function getCookie(name) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = jQuery.trim(cookies[i]);
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
