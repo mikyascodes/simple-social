@@ -2,8 +2,6 @@
 This project is about the basics of a social network application. The users can create an account-> complete their profile-> then they can follow other users. They can also send message to  other users. The project have this additional features.
 1. Reset Forgotten Password using Gmail SMTP server   
 2. Profile completion feature using django signals
-3. Django channels for messaging
-
 - To run the project follow this commands
 1. create virtual env
 - pip install virtual env
