@@ -102,3 +102,37 @@ function getCookie(name) {
   return cookieValue;
 }
 
+//-----NEWMESAAGES----
+
+$(document).ready(function () {
+  function fetchMessages() {
+    var messagesUrl = $('#messages').data('messages-url');
+    var lastMessageSeenId = $('#messages p:last-child').data('message-id');
+    $.ajax({
+      url: messagesUrl,
+      data: {
+        'last_message_seen_id': lastMessageSeenId
+      },
+      success: function (data) {
+        var messagesDiv = $('#messages');
+        $.each(data.messages, function (index, message) {
+          var messageHtml = `<p data-message-id="${message.id}">${message.sender}: ${message.content} <span id="time-stamp">${message.timestamp}</span></p>`;
+          messagesDiv.append(messageHtml);
+
+        });
+        messagesDiv.scrollTop(messagesDiv.prop("scrollHeight"));
+
+        if (data.last_message_seen_id) {
+          lastMessageSeenId = data.last_message_seen_id;
+        }
+      },
+      complete: function () {
+        // Schedule the next request when the current one's complete
+        setTimeout(fetchMessages, 5000); // Adjust the interval as needed
+      }
+    });
+  }
+
+  fetchMessages(); // Initial call
+});
+

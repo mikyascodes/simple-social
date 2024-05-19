@@ -48,17 +48,17 @@
   </a>
 </div>
 
-<div id="messages">
+<div id="messages" data-messages-url="{% url 'get_messages' recipient.id %}">
   <h3>Chat with {{ recipient.username }}</h3>
   {% for message in messages %} {% if message.sender == request.user %}
-  <p>
+  <p data-message-id="{{ message.id }}">
     You: {{ message.content }}
     <span id="time-stamp">{{ message.timestamp }}</span>
   </p>
   {% else %}
-  <p>
+  <p data-message-id="{{ message.id }}">
     {{ recipient.username }}: {{ message.content }}
-    <span id="time-stamp">{{message.timestamp}}</span>
+    <span id="time-stamp">{{ message.timestamp }}</span>
   </p>
   {% endif %} {% endfor %}
 </div>

@@ -73,6 +73,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = "Simple_Social.wsgi.application"
 ASGI_APPLICATION = "Simple_Social.asgi.application"
 

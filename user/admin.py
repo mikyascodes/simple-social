@@ -21,7 +21,7 @@ admin.site.register(User, UserAdmin)
 
 
 class MessageAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("id", "sender", "recipient", "content", "timestamp")
 
 
 admin.site.register(Message, MessageAdmin)

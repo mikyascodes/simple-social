@@ -9,6 +9,8 @@ from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
+from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 
 def login_view(request):
@@ -64,7 +66,8 @@ def home(request):
 @login_required
 def complete_profile(request):
     u_form = UserUpdateForm(request.POST, instance=request.user)
-    form = ProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
+    form = ProfileForm(request.POST, request.FILES,
+                       instance=request.user.userprofile)
     if request.method == "POST":
         if form.is_valid() and u_form.is_valid():
             form.save()
@@ -137,7 +140,8 @@ def add_user(request, pk):
             current_user.userprofile.following.remove(users)
             current_user.userprofile.save()
             messages.add_message(
-                request, messages.SUCCESS, f"You have unfollowed {users.user.username}"
+                request, messages.SUCCESS,
+                f"You have unfollowed {users.user.username}"
             )
             return redirect(reverse("profile"))
     return redirect(reverse("profile"))
@@ -145,7 +149,8 @@ def add_user(request, pk):
 
 def check_notifications(request):
     if request.user.is_authenticated:
-        notifications = Notification.objects.filter(user=request.user, read=False)
+        notifications = Notification.objects.filter(
+            user=request.user, read=False)
         data = [
             {
                 "message": notification.message.content,
@@ -180,3 +185,30 @@ def update_notification_status(request):
             return JsonResponse({"success": False, "error": "Notification not found"})
     else:
         return JsonResponse({"success": False, "error": "User is not authenticated"})
+
+
+@login_required
+def get_messages(request, pk):
+    recipient = get_object_or_404(User, pk=pk)
+    last_message_seen_id = request.GET.get("last_message_seen_id")
+    messages = Message.objects.none()
+
+    if last_message_seen_id:
+        try:
+            last_message_seen_id = int(last_message_seen_id)
+        except ValueError as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+        messages = Message.objects.filter(
+            Q(sender=request.user, recipient=recipient, id__gt=last_message_seen_id) |
+            Q(sender=recipient, recipient=request.user, id__gt=last_message_seen_id)
+        ).order_by("id")
+
+    message_list = [
+        {"id": message.id, "sender": message.sender.username,
+            "content": message.content, "timestamp": message.timestamp}
+        for message in messages
+    ]
+
+    latest_message_id = messages.last().id if messages.exists() else None
+    return JsonResponse({"messages": message_list, "last_message_seen_id": latest_message_id})

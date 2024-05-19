@@ -3,6 +3,7 @@ from django.contrib.auth import views as auth_views
 from .views import (
     add_user,
     check_notifications,
+    get_messages,
     notifications,
     signup,
     profile,
@@ -31,6 +32,7 @@ urlpatterns = [
     path("complete_profile/", complete_profile, name="complete_profile"),
     path("profile/<int:pk>/", view_profile, name="view_profile"),
     path("friends/", friends_view, name="friends"),
+    path("get_messages/<int:pk>/", get_messages, name="get_messages"),
     path("check_notification/", check_notifications, name="check_notification"),
     path("notification/", notifications, name="show_notification"),
     path(
