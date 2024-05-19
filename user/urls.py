@@ -14,8 +14,6 @@ from .views import (
     view_profile,
     friends_view,
 )
-from django.conf import settings
-from django.conf.urls.static import static
 
 
 urlpatterns = [
